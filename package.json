@@ -1,0 +1,24 @@
+{
+  "name": "euchrenow",
+  "version": "1.0.0",
+  "description": "A multiplayer Eurchre card game web application.",
+  "homepage": "https://github.com/warliang/EuchreNow#readme",
+  "bugs": {
+    "url": "https://github.com/warliang/EuchreNow/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/warliang/EuchreNow.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "workspaces": ["apps/*", "packages/*"],
+  "scripts": {
+    "client": "npm run dev --workspace=apps/client",
+    "server": "npm run dev --workspace=apps/server",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
