@@ -11,14 +11,20 @@
     "url": "git+https://github.com/warliang/EuchreNow.git"
   },
   "license": "ISC",
-  "author": "",
+  "author": "warliang",
   "type": "module",
-  "main": "index.js",
-  "workspaces": ["apps/*", "packages/*"],
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
     "client": "npm run dev --workspace=apps/client",
     "server": "npm run dev --workspace=apps/server",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "typescript": "^6.0.2"
   }
 }
