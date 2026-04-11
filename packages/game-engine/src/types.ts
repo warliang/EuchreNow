@@ -1,5 +1,5 @@
 // suits in a standard deck
-export const SUITS = ['hearts', 'diamonds', 'clubs', 'spaces'] as const;
+export const SUITS = ['hearts', 'diamonds', 'clubs', 'spades'] as const;
 export type Suit = (typeof SUITS)[number];
 
 // euchre only uses 9-Ace, might change in future to support game settings
@@ -19,7 +19,7 @@ export type Player = {
 };
 
 export type Trick = {
-	plays: { playerId: string; card: Card }[];
+	plays: { playerId: string; card: Card }[]; // can only be 0-4 plays, once it hits 5 the trick is complete and winner is determined
 	winnerId: string | null;
 	leadSuit: Suit | null; // suit of the first card played in the trick, used to determine who wins the trick
 };
@@ -33,13 +33,14 @@ export type BidState = {
 	makerTeam: 0 | 1 | null; // team of player who called trump
 	loner: string | null; // player id of lone player, if any
 	round: 1 | 2; // round 1 = first round of bidding, round 2 = second round of bidding if no one ordered up
-	stickTheDealer: boolean; // if true, dealer must call trump in second round of bidding
+	passCount: number; // how many players have passed in the current bidding round
 };
 
 export type GamePhase =
 	| 'waiting' // waiting for players
 	| 'dealing' // cards being dealt
 	| 'bidding' // trump selection
+	| 'dealer-swap' // dealer must swap a card after order-up before play starts
 	| 'playing' // tricks being played
 	| 'scoring' // hand is over, tallying points
 	| 'gameover'; // someone hit 10 points
@@ -54,10 +55,11 @@ export type GameState = {
 	phase: GamePhase;
 	players: Player[];
 	dealerIndex: number;
-	currentTrickIndex: number; // 0-4, 5 tricks per hand
+	currentTrickIndex: number;
 	tricks: Trick[];
 	bid: BidState | null;
 	score: [number, number]; // team 0 score, team 1 score
+	deck: Card[]; // current state of the deck, used for dealing and tracking remaining cards in the kitty
 	kitty: Card[]; // 4 cards in the kitty after dealing
 	loner: string | null; // player id of lone player, if any
 	settings: GameSettings;
