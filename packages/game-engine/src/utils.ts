@@ -74,7 +74,7 @@ export const getPlayableCards = (hand: Card[], leadSuit: Suit | null, trump: Sui
 // Helper to get the team index of a player
 export const getPlayerTeam = (state: GameState, playerId: string): 0 | 1 => {
 	const index = state.players.findIndex((player) => player.id === playerId);
-	if (index === 1) throw new Error(`Player ${playerId} not found`);
+	if (index === -1) throw new Error(`Player ${playerId} not found`);
 	return (index % 2) as 0 | 1;
 };
 

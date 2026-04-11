@@ -6,7 +6,17 @@
  */
 
 // Types
-export type { GameState, GamePhase, Card, Player, Trick, BidState, GameSettings } from './types.js';
+export type {
+	GameState,
+	GamePhase,
+	Card,
+	Player,
+	Trick,
+	BidState,
+	GameSettings,
+	Suit,
+	Rank,
+} from './types.js';
 
 // Constants
 export { SUITS, RANKS } from './types.js';
