@@ -40,7 +40,11 @@ This is a **monorepo** (`apps/*` + `packages/*` workspaces) for a real-time mult
 - Socket event handlers go in `apps/server/src/socket/events/`
 - Prefer immutable patterns: return new GameState, never mutate
 - All functions must have TypeScript return types
-- Use human-readable callback parameter names (e.g., `currPlayer` not `p`) when iterating over arrays
+- Use descriptive callback parameter names that reflect what the item represents
+  (e.g., `player` not `p`, `trick` not `t`, `card` not `c`).
+  Exceptions where short forms are fine:
+  - Simple numeric/index operations (`i`, `n => n + 1`)
+  - Destructured single-property access (`({ isTrue }) => isTrue`)
 
 ### Three-Layer Design
 
