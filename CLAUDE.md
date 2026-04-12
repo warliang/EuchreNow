@@ -2,6 +2,15 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Developer Profile
+
+- Solo developer
+- Strong in frontend (React, TypeScript, CSS)
+- Less experienced with backend (Node.js, Express, Socket.io) and databases
+  (PostgreSQL, Redis) — provide clear explanations for backend patterns,
+  queries, and architecture decisions
+- Include pros vs cons when recommending approaches
+
 ## Domain Reference
 
 - Full game rules: see README.md (Euchre rules, scoring, house rules)
@@ -15,21 +24,6 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 npm run dev        # Run client + server concurrently
 npm run client     # Client dev server only (Vite, port 5173)
 npm run server     # Server only (Node --watch)
-```
-
-### Client (`apps/client`)
-
-```bash
-npm run dev        # Vite dev server with HMR
-npm run build      # tsc -b + Vite production build
-npm run lint       # ESLint (flat config)
-npm run preview    # Preview production build
-```
-
-### Server (`apps/server`)
-
-```bash
-npm run dev        # Node --watch on src/index.ts
 ```
 
 ## Testing
@@ -46,6 +40,7 @@ This is a **monorepo** (`apps/*` + `packages/*` workspaces) for a real-time mult
 - Socket event handlers go in `apps/server/src/socket/events/`
 - Prefer immutable patterns: return new GameState, never mutate
 - All functions must have TypeScript return types
+- Use human-readable callback parameter names (e.g., `currPlayer` not `p`) when iterating over arrays
 
 ### Three-Layer Design
 
@@ -85,10 +80,6 @@ Client  <--socket event--  Server
 - `room:updated` — Updated `Room` state
 - `game:stateUpdated` — Updated `GameState`
 - `game:error` — Error string
-
-### TypeScript Config
-
-Root `tsconfig.json` is the base (strict, `esnext`, `moduleResolution: "bundler"`, `verbatimModuleSyntax`). Each package extends it and adds its own `lib` and `types` entries. The client has a separate `tsconfig.app.json` for DOM types.
 
 ### Planned Infrastructure (not yet implemented)
 

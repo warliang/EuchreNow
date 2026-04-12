@@ -5,6 +5,9 @@ import type { GameSettings } from '@euchrenow/game-engine';
 // key = roomId, value = Room
 const rooms = new Map<string, Room>(); // TODO: moved to redis in future
 
+// O(1) lookup: playerId → roomId
+const playerRoomMap = new Map<string, string>();
+
 const generateRoomId = (): string => {
 	// Simple 6 character uppercase room code e.g. "XK92BT"
 	return Math.random().toString(36).substring(2, 8).toUpperCase();
@@ -21,6 +24,7 @@ export const createRoom = (player: RoomPlayer, settings: GameSettings): Room => 
 	};
 
 	rooms.set(id, room);
+	playerRoomMap.set(player.id, id);
 	return room;
 };
 
@@ -28,9 +32,10 @@ export const getRoom = (roomId: string): Room | undefined => {
 	return rooms.get(roomId);
 };
 
-// TODO: optimize this by keeping a separate map of playerId -> roomId for O(1) lookups instead of O(n) search through rooms
 export const getRoomByPlayerId = (playerId: string): Room | undefined => {
-	return [...rooms.values()].find((room) => room.players.some((p) => p.id === playerId));
+	const roomId = playerRoomMap.get(playerId);
+	if (!roomId) return undefined;
+	return rooms.get(roomId);
 };
 
 export const addPlayerToRoom = (roomId: string, player: RoomPlayer): Room | null => {
@@ -39,6 +44,7 @@ export const addPlayerToRoom = (roomId: string, player: RoomPlayer): Room | null
 	if (room.players.length >= 4) return null;
 
 	room.players.push({ ...player, isHost: false, isReady: false });
+	playerRoomMap.set(player.id, roomId);
 	return room;
 };
 
@@ -46,7 +52,8 @@ export const removePlayerFromRoom = (roomId: string, playerId: string): Room | n
 	const room = rooms.get(roomId);
 	if (!room) return null;
 
-	room.players = room.players.filter((p) => p.id !== playerId);
+	room.players = room.players.filter((currPlayer) => currPlayer.id !== playerId);
+	playerRoomMap.delete(playerId);
 
 	// If host left, assign host to next player
 	if (room.players.length > 0 && !room.players.some((p) => p.isHost)) {

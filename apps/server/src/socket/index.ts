@@ -13,6 +13,7 @@ import {
 } from '../room/roomManager.js';
 
 import {
+	type GameState,
 	createGame,
 	startGame,
 	startNewHand,
@@ -23,10 +24,17 @@ import {
 	playerDealerSwap,
 	playerPlayCard,
 	scoreCurrentHand,
+	getPlayerView,
 } from '@euchrenow/game-engine';
 
 type TypedSocket = Socket<ClientToServerEvents, ServerToClientEvents>;
 type TypedIO = Server<ClientToServerEvents, ServerToClientEvents>;
+
+const emitGameState = (io: TypedIO, state: GameState): void => {
+	for (const player of state.players) {
+		io.to(player.id).emit('game:stateUpdated', getPlayerView(state, player.id));
+	}
+};
 
 export const registerSocketHandlers = (io: TypedIO) => {
 	io.on('connection', (socket: TypedSocket) => {
@@ -106,7 +114,12 @@ export const registerSocketHandlers = (io: TypedIO) => {
 			const room = getRoomByPlayerId(socket.id);
 			if (!room) return;
 
-			const player = room.players.find((p) => p.id === socket.id);
+			if (room.gameState) {
+				socket.emit('game:error', { message: 'Game is already in progress' });
+				return;
+			}
+
+			const player = room.players.find((currPlayer) => currPlayer.id === socket.id);
 			if (!player?.isHost) {
 				socket.emit('game:error', { message: 'Only the host can start the game' });
 				return;
@@ -123,7 +136,7 @@ export const registerSocketHandlers = (io: TypedIO) => {
 				gameState = startGame(gameState);
 
 				updateRoomGameState(room.id, gameState);
-				io.to(room.id).emit('game:stateUpdated', gameState);
+				emitGameState(io, gameState);
 			} catch (err) {
 				socket.emit('game:error', { message: (err as Error).message });
 			}
@@ -137,7 +150,7 @@ export const registerSocketHandlers = (io: TypedIO) => {
 			try {
 				const newState = playerOrderUp(room.gameState, socket.id, data.goAlone);
 				updateRoomGameState(room.id, newState);
-				io.to(room.id).emit('game:stateUpdated', newState);
+				emitGameState(io, newState);
 			} catch (err) {
 				socket.emit('game:error', { message: (err as Error).message });
 			}
@@ -164,14 +177,7 @@ export const registerSocketHandlers = (io: TypedIO) => {
 				}
 
 				updateRoomGameState(room.id, newState);
-				io.to(room.id).emit('game:stateUpdated', newState);
-
-				// If hand was thrown in, auto-deal next hand
-				if (newState.phase === 'dealing') {
-					const dealtState = startNewHand(newState);
-					updateRoomGameState(room.id, dealtState);
-					io.to(room.id).emit('game:stateUpdated', dealtState);
-				}
+				emitGameState(io, newState);
 			} catch (err) {
 				socket.emit('game:error', { message: (err as Error).message });
 			}
@@ -184,7 +190,7 @@ export const registerSocketHandlers = (io: TypedIO) => {
 			try {
 				const newState = playerNameTrump(room.gameState, socket.id, data.suit, data.goAlone);
 				updateRoomGameState(room.id, newState);
-				io.to(room.id).emit('game:stateUpdated', newState);
+				emitGameState(io, newState);
 			} catch (err) {
 				socket.emit('game:error', { message: (err as Error).message });
 			}
@@ -195,17 +201,10 @@ export const registerSocketHandlers = (io: TypedIO) => {
 			if (!room?.gameState) return;
 
 			try {
-				let newState = playerDealerSwap(room.gameState, socket.id, data.card);
-
-				// Initialize first trick, TODO: move to game engine logic?
-				newState = {
-					...newState,
-					tricks: [{ plays: [], winnerId: null, leadSuit: null }],
-					currentTrickIndex: 0,
-				};
+				const newState = playerDealerSwap(room.gameState, socket.id, data.card);
 
 				updateRoomGameState(room.id, newState);
-				io.to(room.id).emit('game:stateUpdated', newState);
+				emitGameState(io, newState);
 			} catch (err) {
 				socket.emit('game:error', { message: (err as Error).message });
 			}
@@ -216,36 +215,32 @@ export const registerSocketHandlers = (io: TypedIO) => {
 			if (!room?.gameState) return;
 
 			try {
-				let newState = playerPlayCard(room.gameState, socket.id, data.card);
-
-				// Auto-score when hand is complete, reduces number of events emitted
-				// TODO: consider moving this logic into game engine, like resolvePlayCard
-				// resolvePlayCard -> playCard -> checks if complete -> scoreHand -> startNewHand or endGame
-				if (newState.phase === 'scoring') {
-					newState = scoreCurrentHand(newState);
-
-					// Auto-deal next hand if game isn't over
-					if (newState.phase === 'dealing') {
-						newState = startNewHand(newState);
-					}
-				}
+				const newState = playerPlayCard(room.gameState, socket.id, data.card);
 
 				updateRoomGameState(room.id, newState);
-				io.to(room.id).emit('game:stateUpdated', newState);
+				emitGameState(io, newState);
 			} catch (err) {
 				socket.emit('game:error', { message: (err as Error).message });
 			}
 		});
 
-		// TODO: consider removing this as playCard handler auto-advances
 		socket.on('game:nextHand', () => {
 			const room = getRoomByPlayerId(socket.id);
 			if (!room?.gameState) return;
 
 			try {
-				const newState = startNewHand(room.gameState);
+				let newState = room.gameState;
+
+				if (newState.phase === 'scoring') {
+					newState = scoreCurrentHand(newState);
+				}
+
+				if (newState.phase === 'dealing') {
+					newState = startNewHand(newState);
+				}
+
 				updateRoomGameState(room.id, newState);
-				io.to(room.id).emit('game:stateUpdated', newState);
+				emitGameState(io, newState);
 			} catch (err) {
 				socket.emit('game:error', { message: (err as Error).message });
 			}
@@ -257,6 +252,12 @@ export const registerSocketHandlers = (io: TypedIO) => {
 
 			const room = getRoomByPlayerId(socket.id);
 			if (!room) return;
+
+			// If a game is in progress, abort it and notify remaining players
+			if (room.gameState) {
+				updateRoomGameState(room.id, null);
+				io.to(room.id).emit('game:error', { message: 'A player has disconnected. Game aborted.' });
+			}
 
 			const updatedRoom = removePlayerFromRoom(room.id, socket.id);
 			if (updatedRoom) {

@@ -43,4 +43,5 @@ export {
 	isCardMatches,
 	getTotalPlayerCount,
 	getCardValue,
+	getPlayerView,
 } from './utils.js';

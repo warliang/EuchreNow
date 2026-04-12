@@ -81,6 +81,17 @@ export const getPlayerTeam = (state: GameState, playerId: string): 0 | 1 => {
 // How many players are expected in a trick (3 if going alone, 4 otherwise)
 export const getTotalPlayerCount = (state: GameState): number => (state.loner !== null ? 3 : 4);
 
+// Returns a view of the game state filtered for a specific player
+// Hides other players' hands, the deck, and the kitty
+export const getPlayerView = (state: GameState, playerId: string): GameState => ({
+	...state,
+	players: state.players.map((currPlayer) =>
+		currPlayer.id === playerId ? currPlayer : { ...currPlayer, hand: [] },
+	),
+	deck: [],
+	kitty: [],
+});
+
 // ---------------- TURN UTILITIES ----------------
 export const getCurrentPlayerId = (state: GameState): string | null => {
 	switch (state.phase) {
