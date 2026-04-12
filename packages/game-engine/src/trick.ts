@@ -1,54 +1,13 @@
 import type { GameState, Card, Trick } from './types.js';
 
 import {
+	getCurrentPlayerId,
 	getEffectiveSuit,
 	getPlayableCards,
 	isCardMatches,
 	getTotalPlayerCount,
 	getCardValue,
 } from './utils.js';
-
-// Returns the expected player's id
-const getExpectedPlayer = (state: GameState): string => {
-	const { currentTrickIndex, tricks, players, loner, dealerIndex } = state;
-
-	const currentTrick = tricks[currentTrickIndex]!;
-	const playsCount = currentTrick.plays.length;
-
-	const isLonerActive = loner !== null;
-	let lonerIndex = isLonerActive ? players.findIndex((player) => player.id === loner) : -1;
-
-	// First card of the trick
-	if (playsCount === 0) {
-		if (currentTrickIndex === 0) {
-			// First trick — player left of dealer leads (or maker + 1, if going alone)
-			if (isLonerActive) {
-				return players[(lonerIndex + 1) % players.length]!.id;
-			}
-			// no loner, then player left of dealer leads
-			return players[(dealerIndex + 1) % players.length]!.id;
-		}
-		// Subsequent tricks — winner of previous trick leads
-		return tricks[currentTrickIndex - 1]!.winnerId!;
-	}
-
-	// Mid trick — next player clockwise, derived from previous play
-	const currentPlayerIndex = players.findIndex(
-		(player) => player.id === currentTrick.plays[playsCount - 1]!.playerId,
-	);
-	let nextIndex = (currentPlayerIndex + 1) % players.length;
-
-	// Skip loner's partner if going alone
-	if (isLonerActive) {
-		const partnerIndex = (lonerIndex + 2) % players.length;
-		// If the next player is the partner, skip them
-		if (nextIndex === partnerIndex) {
-			nextIndex = (nextIndex + 1) % players.length;
-		}
-	}
-
-	return players[nextIndex]!.id;
-};
 
 // Main function to play a card
 export const playCard = (state: GameState, playerId: string, card: Card): GameState => {
@@ -73,7 +32,10 @@ export const playCard = (state: GameState, playerId: string, card: Card): GameSt
 	}
 
 	// Validate it's this player's turn
-	const expectedPlayerId = getExpectedPlayer(state);
+	const expectedPlayerId = getCurrentPlayerId(state);
+	if (!expectedPlayerId) {
+		throw new Error('Cannot determine current player');
+	}
 	if (playerId !== expectedPlayerId) {
 		throw new Error('Not your turn');
 	}

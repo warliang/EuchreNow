@@ -87,12 +87,12 @@ When ordering up or naming trump, the maker may choose to go alone. Their partne
 
 ### Trick Taking (Player Phase)
 
-- The player to the left of the dealer leads the first trick (or the maker if going alone)
+- The player to the left of the dealer leads the first trick
 - The suit of the card played becomes the **lead suit**, players must follow the lead suit **IF** they have it
 - If a player cannot follow suit they may play any card including trump cards
 - The highest trump card wins the trick, or if no trump is played the highest card of the lead suit wins
 - The winner of each trick leads the next one
-- Each hand plays out 5 tricks (or 4 if someone is going alone)
+- Each hand plays out 5 tricks
 
 **Playable Trumps** _(optional on two players)_
 Allow trumps to be played even if you have cards in your hand that is the current lead suit.

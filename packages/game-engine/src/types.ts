@@ -31,8 +31,6 @@ export type BidState = {
 	trump: Suit | null;
 	maker: string | null; // player id who called trump
 	makerTeam: 0 | 1 | null; // team of player who called trump
-	loner: string | null; // player id of lone player, if any
-	round: 1 | 2; // round 1 = first round of bidding, round 2 = second round of bidding if no one ordered up
 	passCount: number; // how many players have passed in the current bidding round
 };
 

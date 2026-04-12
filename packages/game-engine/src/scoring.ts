@@ -22,7 +22,8 @@ export const scoreHand = (state: GameState): GameState => {
 		throw new Error('No bid state found');
 	}
 
-	const { maker, makerTeam, loner } = state.bid;
+	const { maker, makerTeam } = state.bid;
+	const loner = state.loner;
 
 	if (maker === null || makerTeam === null) {
 		throw new Error('No maker found');

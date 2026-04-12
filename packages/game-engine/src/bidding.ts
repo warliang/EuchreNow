@@ -8,6 +8,10 @@ export const orderUp = (state: GameState, playerId: string, goAlone: boolean): G
 		throw new Error('Not in order-up phase');
 	}
 
+	if (goAlone && !state.settings.goingAlone) {
+		throw new Error('Going alone is not enabled');
+	}
+
 	const makerTeam = getPlayerTeam(state, playerId);
 
 	return {
@@ -18,7 +22,6 @@ export const orderUp = (state: GameState, playerId: string, goAlone: boolean): G
 			trump: state.bid.topCard.suit,
 			maker: playerId,
 			makerTeam,
-			loner: goAlone ? playerId : null,
 		},
 		loner: goAlone ? playerId : null,
 		phase: 'dealer-swap', // dealer must swap a card before playing starts
@@ -42,7 +45,6 @@ export const passOrderUp = (state: GameState): GameState => {
 				...state.bid,
 				phase: 'name-trump',
 				turnIndex: nextTurnIndex,
-				round: 2, // TODO: do i even need round if i have phases?
 				passCount: state.bid.passCount + 1,
 			},
 		};
@@ -53,6 +55,7 @@ export const passOrderUp = (state: GameState): GameState => {
 		bid: {
 			...state.bid,
 			turnIndex: nextTurnIndex,
+			passCount: state.bid.passCount + 1,
 		},
 	};
 };
@@ -70,6 +73,11 @@ export const dealerSwap = (state: GameState, discardCard: Card): GameState => {
 	const newHand = dealer.hand.filter(
 		(card) => !(card.suit === discardCard.suit && card.rank === discardCard.rank),
 	);
+
+	if (newHand.length !== dealer.hand.length - 1) {
+		throw new Error('Discard card not found in dealer hand');
+	}
+
 	newHand.push(topCard);
 
 	const updatedPlayers = state.players.map((player, i) =>
@@ -80,6 +88,8 @@ export const dealerSwap = (state: GameState, discardCard: Card): GameState => {
 		...state,
 		players: updatedPlayers,
 		phase: 'playing',
+		tricks: [{ plays: [], winnerId: null, leadSuit: null }],
+		currentTrickIndex: 0,
 	};
 };
 
@@ -92,6 +102,10 @@ export const nameTrump = (
 ): GameState => {
 	if (!state.bid || state.bid.phase !== 'name-trump') {
 		throw new Error('Not in name-trump phase');
+	}
+
+	if (goAlone && !state.settings.goingAlone) {
+		throw new Error('Going alone is not enabled');
 	}
 
 	// Cannot name the suit of the flipped card
@@ -109,10 +123,11 @@ export const nameTrump = (
 			trump: suit,
 			maker: playerId,
 			makerTeam,
-			loner: goAlone ? playerId : null,
 		},
 		loner: goAlone ? playerId : null,
 		phase: 'playing',
+		tricks: [{ plays: [], winnerId: null, leadSuit: null }],
+		currentTrickIndex: 0,
 	};
 };
 

@@ -37,8 +37,6 @@ export const dealHands = (state: GameState): GameState => {
 			trump: null,
 			maker: null,
 			makerTeam: null,
-			loner: null,
-			round: 1,
 			passCount: 0,
 		},
 	};

@@ -100,10 +100,16 @@ export const getCurrentPlayerId = (state: GameState): string | null => {
 			// First card of the trick
 			if (currentTrick.plays.length === 0) {
 				if (state.tricks.length === 1) {
-					// First trick of the hand — loner leads, otherwise left of dealer
-					return (
-						state.loner ?? state.players[(state.dealerIndex + 1) % state.players.length]?.id ?? null
-					);
+					// First trick — player left of dealer leads, skip loner's partner if sitting out
+					let leadIndex = (state.dealerIndex + 1) % state.players.length;
+					if (state.loner !== null) {
+						const lonerIndex = state.players.findIndex((p) => p.id === state.loner);
+						const partnerIndex = (lonerIndex + 2) % state.players.length;
+						if (leadIndex === partnerIndex) {
+							leadIndex = (leadIndex + 1) % state.players.length;
+						}
+					}
+					return state.players[leadIndex]?.id ?? null;
 				}
 				// Subsequent tricks — winner of previous trick leads
 				return state.tricks[state.tricks.length - 2]?.winnerId ?? null;

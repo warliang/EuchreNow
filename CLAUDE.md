@@ -2,6 +2,11 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Domain Reference
+
+- Full game rules: see README.md (Euchre rules, scoring, house rules)
+- Left Bower belongs to the trump suit during play, not its printed suit
+
 ## Commands
 
 ### Root (run from repo root)
@@ -40,13 +45,14 @@ This is a **monorepo** (`apps/*` + `packages/*` workspaces) for a real-time mult
 - Game engine functions must remain pure — no side effects, no external dependencies
 - Socket event handlers go in `apps/server/src/socket/events/`
 - Prefer immutable patterns: return new GameState, never mutate
+- All functions must have TypeScript return types
 
 ### Three-Layer Design
 
 **`packages/game-engine/`** — Pure game logic, zero external dependencies, exported as `@euchrenow/game-engine`.
 
 - All functions are **immutable**: they accept `GameState` and return a new `GameState`.
-- Entry point: `src/index.ts` — exports ~15 functions grouped by lifecycle phase (create, bid, play, score).
+- Entry point: `src/index.ts` — exports ~15 functions grouped by lifecycle phase (create, bid, play, score, etc.).
 - Key modules: `game.ts` (orchestration), `types.ts` (all shared types), `bidding.ts`, `trick.ts`, `scoring.ts`, `utils.ts`.
 
 **`apps/server/`** — Express HTTP + Socket.io backend.
