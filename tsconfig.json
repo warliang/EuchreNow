@@ -4,14 +4,12 @@
 	"compilerOptions": {
 		// Environment Settings
 		// See also https://aka.ms/tsconfig/module
-		"module": "esnext",
-		"target": "esnext",
-		"moduleResolution": "bundler",
+		"target": "esnext", // what outputs look like
+		"module": "nodenext", // how output handles imports/exports
+		"moduleResolution": "nodenext", // how TS finds files imports point to
 
 		// Other Outputs
 		"sourceMap": true,
-		"declaration": true,
-		"declarationMap": true,
 
 		// Stricter Typechecking Options
 		"noUncheckedIndexedAccess": true,
