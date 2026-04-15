@@ -25,7 +25,7 @@ import {
 	playerPlayCard,
 	scoreCurrentHand,
 	getPlayerView,
-} from '@euchrenow/game-engine';
+} from '@euchrenow/engine';
 
 type TypedSocket = Socket<ClientToServerEvents, ServerToClientEvents>;
 type TypedIO = Server<ClientToServerEvents, ServerToClientEvents>;

@@ -1,4 +1,4 @@
-import type { GameState, GameSettings, Suit, Card } from '@euchrenow/game-engine';
+import type { GameState, GameSettings, Suit, Card } from '@euchrenow/engine';
 
 // player sitting in a room before game starts
 export type RoomPlayer = {

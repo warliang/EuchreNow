@@ -1,5 +1,5 @@
 import type { Room, RoomPlayer } from '../types.js';
-import type { GameSettings } from '@euchrenow/game-engine';
+import type { GameSettings } from '@euchrenow/engine';
 
 // In-memory store of all active rooms
 // key = roomId, value = Room
