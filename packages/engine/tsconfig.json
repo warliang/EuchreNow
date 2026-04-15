@@ -2,6 +2,7 @@
 	"extends": "../../tsconfig.json",
 	"compilerOptions": {
 		"lib": ["ESNext"],
+		"types": ["jest"],
 		"outDir": "dist",
 		"rootDir": "src",
 		"composite": true
