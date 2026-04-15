@@ -56,7 +56,7 @@ export const removePlayerFromRoom = (roomId: string, playerId: string): Room | n
 	playerRoomMap.delete(playerId);
 
 	// If host left, assign host to next player
-	if (room.players.length > 0 && !room.players.some((p) => p.isHost)) {
+	if (room.players.length > 0 && !room.players.some(({ isHost }) => isHost)) {
 		room.players[0]!.isHost = true;
 	}
 

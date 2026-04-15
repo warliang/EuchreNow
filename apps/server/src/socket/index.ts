@@ -131,7 +131,7 @@ export const registerSocketHandlers = (io: TypedIO) => {
 			}
 
 			try {
-				const gamePlayers = room.players.map((p) => ({ id: p.id, name: p.name }));
+				const gamePlayers = room.players.map(({ id, name }) => ({ id, name }));
 				let gameState = createGame(room.id, gamePlayers, room.settings);
 				gameState = startGame(gameState);
 
