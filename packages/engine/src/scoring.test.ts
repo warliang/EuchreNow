@@ -38,7 +38,7 @@ const makeScoringState = (
   });
 
 describe('scoreHand', () => {
-  it('throws when bid is null', () => {
+  it('should throw when bid is null', () => {
     const state = makeGameState({ phase: 'scoring', bid: null });
     expect(() => scoreHand(state)).toThrow('No bid state found');
   });
