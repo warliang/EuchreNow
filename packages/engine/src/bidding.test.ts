@@ -263,8 +263,9 @@ describe('passNameTrump', () => {
   });
 
   describe('stickTheDealer off', () => {
-    let state = makeNameTrumpState({ settings: { stickTheDealer: false, goingAlone: true } });
+    let state: GameState;
     beforeEach(() => {
+      state = makeNameTrumpState({ settings: { stickTheDealer: false, goingAlone: true } });
       // Simulate all passing
       state = passNameTrump(state); // 1 → 2
       state = passNameTrump(state); // 2 → 3
