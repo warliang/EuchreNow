@@ -1,11 +1,11 @@
 {
-	"extends": "../../tsconfig.json",
-	"compilerOptions": {
-		"lib": ["ESNext"],
-		"types": ["jest"],
-		"outDir": "dist",
-		"rootDir": "src",
-		"composite": true
-	},
-	"include": ["src"]
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "lib": ["ESNext"],
+    "types": ["jest", "node"],
+    "outDir": "dist",
+    "rootDir": "src",
+    "composite": true
+  },
+  "include": ["src"]
 }

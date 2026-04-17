@@ -65,7 +65,7 @@ describe('dealHands', () => {
     it('should set bid.topCard to the first kitty card', () => {
       const deck = createDeck();
       const result = dealHands(makeGameState({ phase: 'dealing', deck }));
-      expect(result.bid?.topCard).toEqual(deck[20]);
+      expect(result.bid?.topCard).toEqual(result.kitty[0]);
     });
 
     it('should initialize bid with null trump, maker, makerTeam and zero passCount', () => {
