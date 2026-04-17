@@ -1,29 +1,15 @@
 import { scoreHand, getWinner } from './scoring.js';
-import { makeGameState } from './testFixtures.js';
-import type { Card, GameState, Trick } from './types.js';
 
-const card = (suit: Card['suit'], rank: Card['rank']): Card => ({ suit, rank });
-
-// Build a completed trick won by a specific team.
-// team 0 → player1 wins; team 1 → player2 wins.
-const trickWonBy = (team: 0 | 1): Trick => ({
-  plays: [],
-  winnerId: team === 0 ? 'player1' : 'player2',
-  leadSuit: 'hearts',
-});
+import { makeGameState, card, completedTrick } from './testFixtures.js';
 
 // Build a scoring phase state.
 // tricksWon: array of 0 | 1 indicating which team wins each trick.
 // makerTeam: which team called trump (default 1).
-const makeScoringState = (
-  tricksWon: Array<0 | 1>,
-  makerTeam: 0 | 1 = 1,
-  overrides: Partial<GameState> = {},
-) =>
+const makeScoringState = (tricksWon: Array<0 | 1>, makerTeam: 0 | 1 = 1, overrides = {}) =>
   makeGameState({
     phase: 'scoring',
     dealerIndex: 0,
-    tricks: tricksWon.map(trickWonBy),
+    tricks: tricksWon.map((team) => completedTrick(team === 0 ? 'player1' : 'player2')),
     score: [0, 0],
     bid: {
       phase: 'done',
@@ -43,50 +29,24 @@ describe('scoreHand', () => {
     expect(() => scoreHand(state)).toThrow('No bid state found');
   });
 
-  describe('makers win', () => {
-    describe('3 of the 5 tricks', () => {
-      const result = scoreHand(makeScoringState([1, 1, 1, 0, 0]));
+  it('should award 1 point to the makers for winning exactly 3 tricks', () => {
+    const result = scoreHand(makeScoringState([1, 0, 1, 0, 1]));
+    expect(result.score).toEqual([0, 1]);
+  });
 
-      it('should award 1 point to the makers', () => {
-        expect(result.score[1]).toBe(1);
-      });
+  it('should award 1 point to the makers for winning exactly 4 tricks', () => {
+    const result = scoreHand(makeScoringState([1, 1, 0, 1, 0]));
+    expect(result.score).toEqual([0, 1]);
+  });
 
-      it('should award 0 points to the defenders', () => {
-        expect(result.score[0]).toBe(0);
-      });
-    });
+  it('should award 2 points to makers for winning all 5 tricks', () => {
+    const result = scoreHand(makeScoringState([1, 1, 1, 1, 1]));
+    expect(result.score).toEqual([0, 2]);
+  });
 
-    describe('4 of the 5 tricks', () => {
-      const result = scoreHand(makeScoringState([1, 1, 1, 1, 0]));
-
-      it('should award 1 point to the makers', () => {
-        expect(result.score[1]).toBe(1);
-      });
-
-      it('should award 0 points to the defenders', () => {
-        expect(result.score[0]).toBe(0);
-      });
-    });
-
-    describe('all 5 tricks (march)', () => {
-      const result = scoreHand(makeScoringState([1, 1, 1, 1, 1]));
-
-      it('should award 2 points to the makers', () => {
-        expect(result.score[1]).toBe(2);
-      });
-
-      it('should award 0 points to the defenders', () => {
-        expect(result.score[0]).toBe(0);
-      });
-    });
-
-    describe('euchred (makers win 0-2 tricks)', () => {
-      const result = scoreHand(makeScoringState([0, 1, 0, 0, 1]));
-
-      it('should award 2 points to the defenders', () => {
-        expect(result.score[0]).toBe(2);
-      });
-    });
+  it('should award 2 points to defenders for euchre (makers win 0 tricks)', () => {
+    const result = scoreHand(makeScoringState([0, 0, 0, 0, 0]));
+    expect(result.score).toEqual([2, 0]);
   });
 
   describe('loner is active', () => {

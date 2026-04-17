@@ -1,6 +1,6 @@
-import type { GameState, Player, BidState, Suit, Rank } from './types.js';
+import type { GameState, Player, BidState, Suit, Rank, Card, Trick } from './types.js';
 
-export const card = (suit: Suit, rank: Rank) => ({ suit, rank });
+export const card = (suit: Suit, rank: Rank): Card => ({ suit, rank });
 
 export const makePlayers = (): Player[] => {
   return [
@@ -10,6 +10,17 @@ export const makePlayers = (): Player[] => {
     { id: 'player4', name: 'Diana', hand: [], team: 1 },
   ];
 };
+
+// Build a completed trick won by a specific team.
+// team 0 → player1 wins; team 1 → player2 wins.
+export const completedTrick = (
+  winnerId: string | null = null,
+  leadSuit: Suit | null = 'hearts',
+): Trick => ({
+  plays: [],
+  winnerId,
+  leadSuit,
+});
 
 export const createBidState = (overrides: Partial<BidState> = {}): BidState => ({
   phase: 'order-up',

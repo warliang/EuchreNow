@@ -9,10 +9,8 @@ import {
   getPlayerView,
   getCurrentPlayerId,
 } from './utils.js';
-import { makeGameState } from './testFixtures.js';
+import { makeGameState, card } from './testFixtures.js';
 import type { Card, Trick } from './types.js';
-
-const card = (suit: Card['suit'], rank: Card['rank']): Card => ({ suit, rank });
 
 const makeTrick = (
   plays: Trick['plays'],

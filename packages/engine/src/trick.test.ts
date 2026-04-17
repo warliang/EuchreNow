@@ -1,14 +1,6 @@
 import { playCard } from './trick.js';
-import { makeGameState } from './testFixtures.js';
+import { makeGameState, card, completedTrick } from './testFixtures.js';
 import type { Card, GameState, Trick } from './types.js';
-
-const card = (suit: Card['suit'], rank: Card['rank']): Card => ({ suit, rank });
-
-const completedTrick = (winnerId: string): Trick => ({
-  plays: [],
-  winnerId,
-  leadSuit: 'hearts',
-});
 
 // Base playing state: trump=hearts, dealer=player1 (index 0), so player2 leads trick 1.
 // Turn order: player2 → player3 → player4 → player1
@@ -22,7 +14,7 @@ const makePlayingState = (overrides: Partial<GameState> = {}) =>
       { id: 'player3', name: 'Charlie', hand: [card('hearts', 'K'), card('spades', 'K')], team: 0 },
       { id: 'player4', name: 'Diana', hand: [card('hearts', 'Q'), card('diamonds', 'K')], team: 1 },
     ],
-    tricks: [{ plays: [], winnerId: null, leadSuit: null }],
+    tricks: [completedTrick(null, null)], // current trick starts empty with no winner
     currentTrickIndex: 0,
     bid: {
       phase: 'done',

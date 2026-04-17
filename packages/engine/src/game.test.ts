@@ -13,7 +13,7 @@ import {
   scoreCurrentHand,
 } from './game.js';
 
-import { makeGameState, createBidState, makePlayers } from './testFixtures.js';
+import { makeGameState, createBidState, makePlayers, card } from './testFixtures.js';
 
 describe('createGame', () => {
   it('should throw an error if there are not exactly 4 players', () => {
@@ -111,11 +111,11 @@ describe('playerDealerSwap', () => {
           name: 'Alice',
           team: 0,
           hand: [
-            { suit: 'clubs', rank: '9' },
-            { suit: 'clubs', rank: '10' },
-            { suit: 'diamonds', rank: '9' },
-            { suit: 'diamonds', rank: '10' },
-            { suit: 'spades', rank: '9' },
+            card('clubs', '9'),
+            card('clubs', '10'),
+            card('diamonds', '9'),
+            card('diamonds', '10'),
+            card('spades', '9'),
           ],
         },
         { id: 'player2', name: 'Bob', team: 1, hand: [] },
@@ -125,17 +125,17 @@ describe('playerDealerSwap', () => {
       bid: createBidState({
         phase: 'done',
         trump: 'hearts',
-        topCard: { suit: 'hearts', rank: 'A' },
+        topCard: card('hearts', 'A'),
         maker: 'player2',
         makerTeam: 1,
       }),
     });
 
-    const result = playerDealerSwap(state, 'player1', { suit: 'clubs', rank: '9' });
+    const result = playerDealerSwap(state, 'player1', card('clubs', '9'));
 
     expect(result.phase).toBe('playing');
-    expect(result.players[0]!.hand).toContainEqual({ suit: 'hearts', rank: 'A' });
-    expect(result.players[0]!.hand).not.toContainEqual({ suit: 'clubs', rank: '9' });
+    expect(result.players[0]!.hand).toContainEqual(card('hearts', 'A'));
+    expect(result.players[0]!.hand).not.toContainEqual(card('clubs', '9'));
   });
 });
 

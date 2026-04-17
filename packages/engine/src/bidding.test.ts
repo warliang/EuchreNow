@@ -1,8 +1,6 @@
 import { orderUp, passOrderUp, dealerSwap, nameTrump, passNameTrump } from './bidding.js';
-import { makeGameState } from './testFixtures.js';
-import type { GameState, Card } from './types.js';
-
-const card = (suit: Card['suit'], rank: Card['rank']): Card => ({ suit, rank });
+import { makeGameState, card } from './testFixtures.js';
+import type { GameState } from './types.js';
 
 const TOP_CARD = card('hearts', '9');
 
@@ -160,7 +158,7 @@ describe('dealerSwap', () => {
     expect(result.players[0]!.hand).toContainEqual(TOP_CARD);
   });
 
-  it('should keep dealer hand at 5 cards after swap', () => {
+  it('should keep dealer hand at 3 cards after swap', () => {
     const result = dealerSwap(makeDealerSwapState(), DISCARD);
     expect(result.players[0]!.hand).toHaveLength(3); // started with 3, swap keeps count
   });
