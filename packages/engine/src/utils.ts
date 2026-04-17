@@ -93,6 +93,8 @@ export const getPlayerView = (state: GameState, playerId: string): GameState => 
 });
 
 // ---------------- TURN UTILITIES ----------------
+// Returns the player ID of the player whose turn it is during the current phase of game
+// null if unnapplicable (e.g. waiting for players, or game over)
 export const getCurrentPlayerId = (state: GameState): string | null => {
 	switch (state.phase) {
 		case 'bidding': {

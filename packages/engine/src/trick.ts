@@ -104,6 +104,7 @@ const resolveTrick = (
 			: currTrick,
 	);
 
+	// TODO: might have to revisit this logic
 	const tricksPerHand = state.loner !== null ? 4 : 5;
 	const isLastTrick = state.currentTrickIndex === tricksPerHand - 1;
 

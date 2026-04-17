@@ -11,6 +11,10 @@ export const createDeck = (): Card[] => {
 	return deck;
 };
 
+/**
+ * Shuffles the given deck of cards using Fisher-Yates algorithm
+ * https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
+ */
 export const shuffleDeck = (deck: Card[]): Card[] => {
 	const shuffled = [...deck];
 
