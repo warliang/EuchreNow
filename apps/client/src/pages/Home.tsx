@@ -40,7 +40,7 @@ const Home = () => {
 
   return (
     <div className="h-full w-full flex justify-center">
-      <div className="flex mt-16 w-4xl h-6/10 border-2 border-border rounded-2xl">
+      <div className="flex mt-14 w-4xl h-7/10 border-2 border-border rounded-2xl">
         {!roomId && (
           <div className="flex flex-col h-full w-20 border-r border-r-border">
             {selectButtons.map((btn, index) => (
