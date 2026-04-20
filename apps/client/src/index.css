@@ -1,15 +1,31 @@
-:root {
-  font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
-  color-scheme: light dark;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import 'tailwindcss';
+
+@theme {
+  --font-inter: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --spacing: 8px;
+
+  --height-navbar-height: 63px;
 }
 
-body {
-  margin: 0;
+@theme inline {
+  --color-primary: var(--color-emerald-400);
+
+  --color-table: var(--color-emerald-600);
+
+  --color-active-bg: var(--color-emerald-500);
+
+  --color-btn-primary: var(--color-emerald-400);
+  --color-btn-active: var(--color-emerald-600);
+
+  --color-border: var(--color-slate-700);
 }
 
-#root {
-  min-height: 100svh;
+@layer base {
+  body {
+    font-family: var(--font-inter);
+    color: var(--color-white);
+    background-color: var(--color-slate-900);
+  }
 }

@@ -1,17 +1,19 @@
 {
-	"extends": "../../tsconfig.json",
-	"compilerOptions": {
-		"tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
 
-		"lib": ["ES2023", "DOM", "DOM.Iterable"],
-		"types": ["vite/client"],
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "types": ["vite/client"],
 
-		/* Bundler mode */
-		"allowImportingTsExtensions": true,
-		"noEmit": true,
-		"jsx": "react-jsx"
+    /* Bundler mode */
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "jsx": "react-jsx"
 
-		/* Linting */
-	},
-	"include": ["src"]
+    /* Linting */
+  },
+  "include": ["src"]
 }

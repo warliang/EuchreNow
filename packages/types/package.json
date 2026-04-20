@@ -1,0 +1,17 @@
+{
+  "name": "@euchrenow/types",
+  "version": "1.0.0",
+  "description": "Shared types for EuchreNow",
+  "license": "ISC",
+  "type": "module",
+  "main": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "dependencies": {
+    "@euchrenow/engine": "*"
+  }
+}
