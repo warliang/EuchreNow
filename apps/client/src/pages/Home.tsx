@@ -40,10 +40,10 @@ const Home = () => {
 
   return (
     <div className="h-full w-full flex justify-center">
-      <div className="flex mt-16 w-4xl h-6/10 border-2 border-border">
+      <div className="flex mt-16 w-4xl h-6/10 border-2 border-border rounded-2xl">
         {!roomId && (
           <div className="flex flex-col h-full w-20 border-r border-r-border">
-            {selectButtons.map((btn) => (
+            {selectButtons.map((btn, index) => (
               <button
                 key={btn.value}
                 aria-selected={selected === btn.value}
@@ -51,7 +51,7 @@ const Home = () => {
                   setSelected(btn.value);
                   btn.onClick();
                 }}
-                className={`cursor-pointer py-2 px-2 hover:text-primary hover:bg-gray-800 aria-selected:text-primary  aria-selected:bg-gray-800 ${btn.class || ''}`}
+                className={`cursor-pointer py-2 px-2 hover:text-primary hover:bg-gray-800 aria-selected:text-primary  aria-selected:bg-gray-800 ${btn.class || ''} ${index === 0 && 'rounded-tl-2xl'}`}
               >
                 {btn.label}
               </button>
@@ -63,20 +63,24 @@ const Home = () => {
             <div>Room ID: {roomId}</div>
           </div>
         ) : (
-          <div className="m-auto p-2 mt-4">
-            <h3 className="text-2xl font-semibold mb-3">Select game options:</h3>
-            <div className="flex flex-col items-center gap-2">
-              <form className="flex flex-col gap-2">
-                <label>
-                  <input type="checkbox" className="mr-2" />
-                  Stick the Dealer
-                </label>
-                <label>
-                  <input type="checkbox" className="mr-2" />
-                  Allow Going Alone
-                </label>
-                <label></label>
+          <div className="h-full w-full flex flex-col items-center p-4">
+            <h3 className="text-2xl font-sembold">Select game options:</h3>
+            <div className="flex flex-col h-full w-full p-4 justify-between items-center">
+              <form>
+                <div className="flex flex-col gap-2">
+                  <label>
+                    <input type="checkbox" className="mr-2" />
+                    Stick the Dealer
+                  </label>
+                  <label>
+                    <input type="checkbox" className="mr-2" />
+                    Allow Going Alone
+                  </label>
+                </div>
               </form>
+              <button type="submit" className="bg-primary py-1 px-2 rounded-lg self-end">
+                Create Game
+              </button>
             </div>
           </div>
         )}
