@@ -14,10 +14,10 @@
 
   --color-table: var(--color-emerald-600);
 
-  --color-active-bg: var(--color-emerald-500);
+  --color-active-bg: var(--color-emerald-600);
 
-  --color-btn-primary: var(--color-emerald-400);
-  --color-btn-active: var(--color-emerald-600);
+  --color-btn-primary: var(--color-emerald-600);
+  --color-btn-active: var(--color-emerald-700);
 
   --color-border: var(--color-slate-700);
 }
