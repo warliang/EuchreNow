@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Button from '../Button';
+import User from './User';
 
 type Props = {
   roomId: string;
@@ -11,13 +12,13 @@ const Lobby = ({ roomId }: Props) => {
     <div className="flex flex-col w-full p-2">
       <div className="flex">{`Room ID: ${roomId}`}</div>
       <div className="flex flex-col flex-1 gap-1 justify-center items-center w-full">
-        <div>User 1</div>
+        <User username="user123x" />
         <div className="flex items-center gap-1">
-          <div>User2</div>
+          <User username="fkjdsalf" />
           <div className="size-50 bg-active-bg rounded-full" />
-          <div>User 3</div>
+          <User username="omgsdt" />
         </div>
-        <div>User 4</div>
+        <User username="loluser" />
       </div>
       <div className="flex justify-end gap-1">
         <Button variant="secondary">Leave</Button>
