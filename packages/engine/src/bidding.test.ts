@@ -132,10 +132,10 @@ describe('dealerSwap', () => {
       phase: 'dealer-swap',
       dealerIndex: 0,
       players: [
-        { id: 'player1', name: 'Alice', hand: DEALER_HAND, team: 0 },
-        { id: 'player2', name: 'Bob', hand: [], team: 1 },
-        { id: 'player3', name: 'Charlie', hand: [], team: 0 },
-        { id: 'player4', name: 'Diana', hand: [], team: 1 },
+        { id: 'player1', username: 'Alice', hand: DEALER_HAND, team: 0 },
+        { id: 'player2', username: 'Bob', hand: [], team: 1 },
+        { id: 'player3', username: 'Charlie', hand: [], team: 0 },
+        { id: 'player4', username: 'Diana', hand: [], team: 1 },
       ],
       bid: {
         phase: 'done',

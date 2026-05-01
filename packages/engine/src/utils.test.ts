@@ -182,10 +182,10 @@ describe('getPlayerView', () => {
   const hand: Card[] = [card('hearts', 'A'), card('spades', '9')];
   const state = makeGameState({
     players: [
-      { id: 'player1', name: 'Alice', hand, team: 0 },
-      { id: 'player2', name: 'Bob', hand: [card('clubs', 'K')], team: 1 },
-      { id: 'player3', name: 'Charlie', hand: [card('diamonds', '10')], team: 0 },
-      { id: 'player4', name: 'Diana', hand: [card('spades', 'Q')], team: 1 },
+      { id: 'player1', username: 'Alice', hand, team: 0 },
+      { id: 'player2', username: 'Bob', hand: [card('clubs', 'K')], team: 1 },
+      { id: 'player3', username: 'Charlie', hand: [card('diamonds', '10')], team: 0 },
+      { id: 'player4', username: 'Diana', hand: [card('spades', 'Q')], team: 1 },
     ],
     deck: [card('hearts', '10')],
     kitty: [card('clubs', '9')],

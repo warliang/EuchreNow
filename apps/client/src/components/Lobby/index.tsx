@@ -19,7 +19,7 @@ const Lobby = ({ roomId }: Props) => {
         </div>
         <div>User 4</div>
       </div>
-      <div className="flex justify-end gap-2">
+      <div className="flex justify-end gap-1">
         <Button variant="secondary">Leave</Button>
         <Button>Start</Button>
       </div>

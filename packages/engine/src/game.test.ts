@@ -108,7 +108,7 @@ describe('playerDealerSwap', () => {
       players: [
         {
           id: 'player1',
-          name: 'Alice',
+          username: 'Alice',
           team: 0,
           hand: [
             card('clubs', '9'),
@@ -118,9 +118,9 @@ describe('playerDealerSwap', () => {
             card('spades', '9'),
           ],
         },
-        { id: 'player2', name: 'Bob', team: 1, hand: [] },
-        { id: 'player3', name: 'Charlie', team: 0, hand: [] },
-        { id: 'player4', name: 'Diana', team: 1, hand: [] },
+        { id: 'player2', username: 'Bob', team: 1, hand: [] },
+        { id: 'player3', username: 'Charlie', team: 0, hand: [] },
+        { id: 'player4', username: 'Diana', team: 1, hand: [] },
       ],
       bid: createBidState({
         phase: 'done',

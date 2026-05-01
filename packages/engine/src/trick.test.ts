@@ -9,10 +9,10 @@ const makePlayingState = (overrides: Partial<GameState> = {}) =>
     phase: 'playing',
     dealerIndex: 0,
     players: [
-      { id: 'player1', name: 'Alice', hand: [card('spades', 'A'), card('diamonds', '9')], team: 0 },
-      { id: 'player2', name: 'Bob', hand: [card('hearts', 'A'), card('clubs', '9')], team: 1 },
-      { id: 'player3', name: 'Charlie', hand: [card('hearts', 'K'), card('spades', 'K')], team: 0 },
-      { id: 'player4', name: 'Diana', hand: [card('hearts', 'Q'), card('diamonds', 'K')], team: 1 },
+      { id: 'player1', username: 'Alice', hand: [card('spades', 'A'), card('diamonds', '9')], team: 0 },
+      { id: 'player2', username: 'Bob', hand: [card('hearts', 'A'), card('clubs', '9')], team: 1 },
+      { id: 'player3', username: 'Charlie', hand: [card('hearts', 'K'), card('spades', 'K')], team: 0 },
+      { id: 'player4', username: 'Diana', hand: [card('hearts', 'Q'), card('diamonds', 'K')], team: 1 },
     ],
     tricks: [completedTrick(null, null)], // current trick starts empty with no winner
     currentTrickIndex: 0,
@@ -89,10 +89,10 @@ describe('after a single card is played', () => {
     // J♦ is the Left Bower when trump is hearts → effective suit is hearts
     const state = makePlayingState({
       players: [
-        { id: 'player1', name: 'Alice', hand: [card('spades', 'A')], team: 0 },
-        { id: 'player2', name: 'Bob', hand: [card('diamonds', 'J')], team: 1 },
-        { id: 'player3', name: 'Charlie', hand: [card('hearts', 'K')], team: 0 },
-        { id: 'player4', name: 'Diana', hand: [card('hearts', 'Q')], team: 1 },
+        { id: 'player1', username: 'Alice', hand: [card('spades', 'A')], team: 0 },
+        { id: 'player2', username: 'Bob', hand: [card('diamonds', 'J')], team: 1 },
+        { id: 'player3', username: 'Charlie', hand: [card('hearts', 'K')], team: 0 },
+        { id: 'player4', username: 'Diana', hand: [card('hearts', 'Q')], team: 1 },
       ],
     });
     const result = playCard(state, 'player2', card('diamonds', 'J'));
@@ -213,10 +213,10 @@ describe('final trick of a hand', () => {
 
   const finalTrickState = makePlayingState({
     players: [
-      { id: 'player1', name: 'Alice', hand: [card('spades', 'A')], team: 0 },
-      { id: 'player2', name: 'Bob', hand: [card('hearts', 'A')], team: 1 },
-      { id: 'player3', name: 'Charlie', hand: [card('hearts', 'K')], team: 0 },
-      { id: 'player4', name: 'Diana', hand: [card('hearts', 'Q')], team: 1 },
+      { id: 'player1', username: 'Alice', hand: [card('spades', 'A')], team: 0 },
+      { id: 'player2', username: 'Bob', hand: [card('hearts', 'A')], team: 1 },
+      { id: 'player3', username: 'Charlie', hand: [card('hearts', 'K')], team: 0 },
+      { id: 'player4', username: 'Diana', hand: [card('hearts', 'Q')], team: 1 },
     ],
     tricks: [...priorTricks, { plays: [], winnerId: null, leadSuit: null }],
     currentTrickIndex: 4,
@@ -249,7 +249,7 @@ describe('going alone (loner)', () => {
       players: [
         {
           id: 'player1',
-          name: 'Alice',
+          username: 'Alice',
           hand: [
             card('spades', 'A'),
             card('diamonds', '9'),
@@ -260,7 +260,7 @@ describe('going alone (loner)', () => {
         },
         {
           id: 'player2',
-          name: 'Bob',
+          username: 'Bob',
           hand: [
             card('hearts', 'A'),
             card('hearts', 'K'),
@@ -271,7 +271,7 @@ describe('going alone (loner)', () => {
         },
         {
           id: 'player3',
-          name: 'Charlie',
+          username: 'Charlie',
           hand: [
             card('spades', 'K'),
             card('spades', 'Q'),
@@ -280,7 +280,7 @@ describe('going alone (loner)', () => {
           ],
           team: 0,
         },
-        { id: 'player4', name: 'Diana', hand: [], team: 1 }, // sitting out
+        { id: 'player4', username: 'Diana', hand: [], team: 1 }, // sitting out
       ],
       tricks: [...priorTricks, { plays: [], winnerId: null, leadSuit: null }],
       currentTrickIndex,
