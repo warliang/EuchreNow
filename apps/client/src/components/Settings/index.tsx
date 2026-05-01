@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 
 import type { GameSettings } from '@euchrenow/engine';
 
+import Button from '../Button';
+
 type Props = {
   onCreateGame: (gameSettings: GameSettings) => void;
 };
@@ -50,12 +52,9 @@ const Settings = ({ onCreateGame }: Props) => {
               Going Alone
             </label>
           </div>
-          <button
-            type="submit"
-            className="cursor-pointer bg-btn-primary hover:bg-btn-active py-1 px-2 rounded-lg mt-auto self-end"
-          >
+          <Button type="submit" className="mt-auto self-end">
             Create Game
-          </button>
+          </Button>
         </form>
       </div>
     </div>

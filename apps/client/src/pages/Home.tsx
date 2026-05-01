@@ -5,6 +5,7 @@ import type { GameSettings } from '@euchrenow/engine';
 import { socket } from '../socket';
 
 import Settings from '../components/Settings';
+import Lobby from '../components/Lobby';
 
 type SelectOption = 'play' | 'create' | 'join';
 
@@ -69,13 +70,7 @@ const Home = () => {
             ))}
           </div>
         )}
-        {roomId ? (
-          <div>
-            <div>Room ID: {roomId}</div>
-          </div>
-        ) : (
-          content
-        )}
+        {roomId ? <Lobby roomId={roomId} /> : content}
       </div>
     </div>
   );
