@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import type { GameSettings } from '@euchrenow/engine';
 
 import Button from '../Button';
+import Card from '../Card';
 
 type Props = {
   onCreateGame: (gameSettings: GameSettings) => void;

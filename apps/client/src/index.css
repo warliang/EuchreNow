@@ -19,6 +19,8 @@
   --color-btn-primary: var(--color-emerald-600);
   --color-btn-active: var(--color-emerald-700);
 
+  --color-card-bg: var(--color-slate-800);
+
   --color-border: var(--color-slate-700);
 }
 

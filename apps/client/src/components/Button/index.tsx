@@ -14,7 +14,7 @@ const Button = (props: Props) => {
         BASE_STYLES,
         variant === 'primary'
           ? 'bg-btn-primary hover:bg-btn-active'
-          : 'border-1 border-btn-primary hover:bg-btn-primary',
+          : 'border border-btn-primary hover:bg-btn-primary',
         className,
       )}
       {...restProps}
